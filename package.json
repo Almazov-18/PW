@@ -1,0 +1,23 @@
+{
+  "name": "PW",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "eslint": "eslint .spec.ts",
+    "show_reports": "npx playwright show-report"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.29.2",
+    "@typescript-eslint/eslint-plugin": "^5.26.0",
+    "@typescript-eslint/parser": "^5.26.0",
+    "eslint": "^8.16.0"
+  },
+  "dependencies": {
+    "allure-playwright": "^2.0.0-beta.25",
+    "typescript": "^4.7.2"
+  }
+}
