@@ -8,4 +8,6 @@ test('Testing search on playwright documentation page', async ({ playwrightHomeP
     await playwrightHomePage.navbar.openSearch()
     await playwrightHomePage.navbar.searchModal.findResult({ keyword: 'python', resultNumber: 0 })
     await playwrightLanguagesPage.languagePresent('python')
+
+    await playwrightHomePage.navbar.visitApi()
 })
