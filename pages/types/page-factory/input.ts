@@ -32,10 +32,4 @@ export class Input extends Component {
         })
     }
 
-    async shouldHaveValue(value: string, locatorProps: LocatorProps = {}) {
-        await test.step(`Checking that ${ this.typeOf } "${ this.componentName }" has a value "${ value }"`, async () => {
-            const locator = this.getLocator(locatorProps)
-            await expect(locator).toHaveValue(value)
-        })
-    }
 }

@@ -8,11 +8,11 @@ export type ComponentProps = {
     name?: string
 }
 export type LocatorContext = { [key: string]: string | boolean | number }
-export type LocatorProps = { locator?: string } & LocatorContext
-
+export type LocatorArray = { locator?: (string | number | any)[] }
+export type LocatorProps = { locator?: string } & LocatorArray & LocatorContext
 export abstract class Component {
     public page: Page
-    public locator: string
+    public locator: string | any
     private name: string | undefined
 
     constructor({ page, locator, name }: ComponentProps) {
@@ -22,6 +22,12 @@ export abstract class Component {
     }
 
     getLocator(props: LocatorProps = {}): Locator {
+        const { locator, ...context } = props
+        const withTemplate = locatorTemplateFormat(locator || this.locator, context)
+        return this.page.locator(withTemplate)
+    }
+
+    getLocatorArray(props: LocatorArray): Locator {
         const { locator, ...context } = props
         const withTemplate = locatorTemplateFormat(locator || this.locator, context)
         return this.page.locator(withTemplate)
@@ -43,11 +49,11 @@ export abstract class Component {
     }
 
     private getErrorMessage(action: string): string {
-        return `The ${this.typeOf} with name "${this.componentName}" and locator ${this.locator} ${action}`
+        return `The ${ this.typeOf } with name "${ this.componentName }" and locator ${ this.locator } ${ action }`
     }
 
     async shouldBeVisible(locatorProps: LocatorProps = {}): Promise<void> {
-        await test.step(`${this.typeOfUpper} "${this.componentName}" should be visible on the page`, async () => {
+        await test.step(`${ this.typeOfUpper } "${ this.componentName }" should be visible on the page`, async () => {
             const locator = this.getLocator(locatorProps)
             await expect(locator, {
                 message: this.getErrorMessage("is not visible"),
@@ -55,20 +61,34 @@ export abstract class Component {
         })
     }
 
-    async shouldHaveText(text: string, locatorProps: LocatorProps = {}): Promise<void> {
-        await test.step(`${this.typeOfUpper} "${this.componentName}" should have text "${text}"`, async () => {
+    async shouldHaveContainText(text: string, locatorProps: LocatorProps = {}): Promise<void> {
+        await test.step(`${ this.typeOfUpper } "${ this.componentName }" should have text "${ text }"`, async () => {
             const locator = this.getLocator(locatorProps)
             await expect(locator, {
-                message: this.getErrorMessage(`does not have text "${text}"`),
+                message: this.getErrorMessage(`does not have text "${ text }"`),
             }).toContainText(text)
         })
     }
 
+    async shouldHaveText(text: string, locatorProps: LocatorProps = {}): Promise<void> {
+        await test.step(`${ this.typeOfUpper } "${ this.componentName }" should have text "${ text }"`, async () => {
+            const locator = this.getLocator(locatorProps)
+            await expect(locator).toHaveText(text)
+        })
+    }
+
+    async shouldHaveValue(value: string, locatorProps: LocatorProps = {}) {
+        await test.step(`Checking that ${ this.typeOf } "${ this.componentName }" has a value "${ value }"`, async () => {
+            const locator = this.getLocator(locatorProps)
+            await expect(locator).toHaveValue(value)
+        })
+    }
+
     async click(locatorProps: LocatorProps = {}): Promise<void> {
-        await test.step(`Clicking the ${this.typeOf} with name "${this.componentName}"`, async () => {
+        await test.step(`Clicking on the ${ this.typeOf } with name "${ this.componentName }"`, async () => {
             const locator = this.getLocator(locatorProps)
             await locator.click()
-            // await this.page.waitForLoadState()
+            await this.page.waitForLoadState()
         })
     }
 

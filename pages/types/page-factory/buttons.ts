@@ -21,4 +21,5 @@ export class Button extends Component {
             await locator.dblclick()
         })
     }
+
 }
