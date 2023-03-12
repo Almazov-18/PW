@@ -11,8 +11,15 @@ export class ListItem extends Component {
     async getListOfItem(value: string | string[] | number | number[], locatorProps: LocatorProps = {}) {
         await test.step(`Getting that ${ this.typeOf } "${ this.componentName }" list of value "${ value }"`, async () => {
             const locator = this.getLocator(locatorProps)
-            // await expect(locator).toHaveValue(value)
             return locator
+        })
+    }
+    
+    async getAllTextContents(locatorProps: LocatorProps = {}): Promise<any[]> {
+        await this.page.waitForLoadState('domcontentloaded')
+        return await test.step(`Get all elements from the ${ this.typeOf } with name "${ this.locator }"`, async () => {
+            const locator = this.getLocatorArray(locatorProps)
+            return await locator.allTextContents()
         })
     }
 }
