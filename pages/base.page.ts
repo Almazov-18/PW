@@ -4,11 +4,8 @@ import { Navbar } from './components/navigation/navbar'
 export class BasePage {
 
     readonly navbar: Navbar
-    public page: Page
 
-
-    constructor(page: Page) {
-        this.page = page
+    constructor(public page: Page) {
         this.navbar = new Navbar(page)
     }
 

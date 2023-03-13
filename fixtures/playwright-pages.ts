@@ -34,5 +34,5 @@ export const playwrightPagesFixture: Fixtures<PlaywrightPagesFixture, ContextPag
     windowHerokuappPage: async ({ contextPage }, use) => {
         const windowHerokuappPage = new WindowHerokuappPage(contextPage)
         await use(windowHerokuappPage)
-    },
+    }
 }
