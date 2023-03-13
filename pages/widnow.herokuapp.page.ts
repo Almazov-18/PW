@@ -22,17 +22,9 @@ export class WindowHerokuappPage extends BasePage {
         this.newWindowBody = new ListItem({ page, locator: this.newWindowBodyText, name: 'New window' })
     }
 
-    // async verifyBodyText() {
-    //     await this.newWindow.verifyPageUrl(this.newWindowLink)
-    //     await this.newWindowBody.shouldHaveText('New Window')
-    // }
-
     async verifyBodyText() {
-        const context =  this.page.context();
-        if (context) {
-            await this.newWindow.verifyPageUrl(this.newWindowLink)
-            await this.newWindowBody.shouldHaveText('New Window')
-        }
+        await this.newWindow.verifyPageUrl(this.newWindowLink)
+        await this.newWindowBody.shouldHaveText('New Window')
     }
 
 }
